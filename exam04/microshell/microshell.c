@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   microshell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbaud <gbaud@42lyon.fr>                    +#+  +:+       +#+        */
+/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/09 15:59:05 by gbaud             #+#    #+#             */
-/*   Updated: 2021/01/13 08:10:56 by gbaud            ###   ########lyon.fr   */
+/*   Updated: 2022/01/04 11:53:32 by nigoncal         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,23 @@
 
 int ft_strlen(char *str) {
 	int i = 0;
-	while (str[i]) i++;
+	while (str[i]) 
+		i++;
 	return (i);
 }
 
-int put_err(char *err, char *path) {
+int put_err(char *err, char *path) 
+{
 	write(2, err, ft_strlen(err));
-	if (path) {
+	if (path) 
+	{
 		write(2, path, ft_strlen(path));
 		write(2, "\n", 1);
 	}
 	return (1);
 }
+
+/********		DELIMIT 1		********/
 
 void sub(char **argv, char **av, int i, int j) {
 	int k = 0;
@@ -46,7 +51,8 @@ void sub(char **argv, char **av, int i, int j) {
 	argv[k] = NULL;
 }
 
-int cd(char **av, int len) {
+int cd(char **av, int len) 
+{
     if (len != 2)
         return (put_err(ERR_CD_ARG, NULL));
     if (chdir(av[1]))
@@ -54,34 +60,42 @@ int cd(char **av, int len) {
     return (0);
 }
 
-int main(int ac, char **av, char **env) {
+/********		DELIMIT 2		********/
+
+int main(int ac, char **av, char **env) 
+{
 	int i=1,j,k,l;
 	int   p[2];
 	pid_t pid;
 	int   fd_in;
 	
-	while (i < ac) {
+	while (i < ac) 
+	{
 		j=i, k=i, l=i;
 		while (j < ac && strncmp(av[j], ";", 2)) // j = limite semicolon
 			j++;
 		fd_in = 0;
-		while (k < j) { // Tant qu'il y a des pipes
+		while (k < j)
+		{ // Tant qu'il y a des pipes
 			l=k;
 			while (l < j && strncmp(av[l], "|", 2)) // [k - l] -> troncon cmd + arg
 				l++;
 			char *argv[l - k + 1];
 			sub(argv, av, k, l);
 			pipe(p);
+/********		DELIMIT 3		********/
 			if ((pid = fork()) == -1)
 				return (put_err(ERR_FATAL, NULL));
-			else if (pid == 0) {
+			else if (pid == 0)
+			{
 				dup2(fd_in, 0);
 				if (l < j)
 					dup2(p[1], 1);
 				close(p[0]);
 				if (!strncmp(argv[0], "cd", 3))
 					cd(argv, l-k);
-				else if (execve(argv[0], argv, env)) {
+				else if (execve(argv[0], argv, env)) 
+				{
 					close(p[1]);
 					close(fd_in);
 					return (put_err(ERR_EXEC, argv[0]));
@@ -89,7 +103,9 @@ int main(int ac, char **av, char **env) {
 				close(p[1]);
 				close(fd_in);
 				return (0);
-			} else {
+			} 
+			else 
+			{
 				waitpid(pid, NULL, 0);
 				close(p[1]);
 				if (fd_in)
