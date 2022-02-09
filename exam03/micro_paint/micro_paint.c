@@ -6,7 +6,7 @@
 /*   By: pmillet <milletp.pro@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 22:41:22 by gbaud             #+#    #+#             */
-/*   Updated: 2022/02/02 09:47:22 by pmillet          ###   ########.fr       */
+/*   Updated: 2022/02/09 11:03:15 by pmillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,15 @@ int is_border(float x, float y, t_rect r) {
 // est-on a l'interieur du rectangle a ecrire ?
     if (x < r.x || x > r.x + r.w ||  // est-on trop a gauche ? x < r.x || la shape est elle assez large ?)
         y < r.y || y > r.y + r.h) // meme ligne mais pour la hauteur
-        return (0);
+        return (0); // cell is outside shape
 // est-on sur le bord du rectangle a ecrire ?
     if ((x - r.x < 1.00000000 || (r.x + r.w) - x < 1.00000000) || // est-on sur le bord droit du rectangle a ecrire/le bord du canevas ?
         (y - r.y < 1.00000000 || (r.y + r.h) - y < 1.00000000)) // meme ligne mais en inversé, pour la verticale
-        return (2);
-// est-on ailleurs ? (hors rect)
-    return (1);
+        return (2); // cell is on border
+    return (1); // cell is in shape but not on border
 }
 
+// parcourt le tableau. Pour chaque case, check si elle est “dans” la forme ou non (via is_border), remplit la case si oui
 int put_rect(int w, int h, char canvas[h][w], t_rect r) // dessine le rectangle a ecrire sur le canevas en memoire
 {
     for (int y = 0; y < h; y++)
