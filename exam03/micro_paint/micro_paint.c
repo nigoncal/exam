@@ -6,7 +6,7 @@
 /*   By: pmillet <milletp.pro@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 22:41:22 by gbaud             #+#    #+#             */
-/*   Updated: 2022/02/09 11:03:15 by pmillet          ###   ########.fr       */
+/*   Updated: 2022/02/10 14:35:25 by pmillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 typedef struct  s_rect 
 {
-    char        t; // type : border ou fill ?
+    char        t; // type : 'r' = border / 'R' = fill
     char        f; // filling char
     float       x; // x pos of the painted rect
     float       y; // y pos of the painted rect

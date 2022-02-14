@@ -6,7 +6,7 @@
 /*   By: pmillet <milletp.pro@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 22:41:22 by gbaud             #+#    #+#             */
-/*   Updated: 2022/02/03 12:49:56 by pmillet          ###   ########.fr       */
+/*   Updated: 2022/02/10 17:08:44 by pmillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,24 @@ float dist(float x1, float y1, float x2, float y2) {
 	return (sqrtf(powf(x2 - x1, 2) + powf(y2 - y1, 2)));
 }
 
+//calcul de la distance entre le pt de la case actuelle et le centre du cercle
 int is_border(float x, float y, t_circ r) {
-    if (dist(x, y, r.x, r.y) > r.r)
+    if (dist(x, y, r.x, r.y) > r.r) // les pts sont ils éloignés de + de r.r ? Si oui, case hors cercle
         return (0);
-    if (dist(x, y, r.x, r.y) > r.r - 1)
+    if (dist(x, y, r.x, r.y) > r.r - 1) // on verif si on est sur le bord de la shape (rayon r.r - 1)
         return (2);
-    return (1);
+    return (1); // on est dans la shape mais pas au bord
 }
 
 int put_rect(int w, int h, char canvas[h][w], t_circ r) {
     for (int y = 0; y < h; y++)
         for (int x = 0; x < w; x++)
             if (r.t == 'c') {
-                if (is_border(x, y, r) == 2) canvas[y][x] = r.f;
+                if (is_border(x, y, r) == 2)
+                    canvas[y][x] = r.f;
             } else if (r.t == 'C') {
-                if (is_border(x, y, r) > 0) canvas[y][x] = r.f;
+                if (is_border(x, y, r) > 0)
+                    canvas[y][x] = r.f;
             } else { return (1); }
     return (0);
 }
