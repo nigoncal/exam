@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Fwoosh.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 23:24:08 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/13 16:39:56 by ncolomer         ###   ########.fr       */
+/*   Updated: 2022/04/06 13:37:46 by nigoncal         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ Fwoosh::Fwoosh():
 
 Fwoosh::~Fwoosh() {}
 
-ASpell *Fwoosh::clone(void) const {
+ASpell *Fwoosh::clone(void) const 
+{
 	return (new Fwoosh(*this));
 }

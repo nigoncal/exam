@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ASpell.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 23:06:00 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/04 13:03:02 by ncolomer         ###   ########.fr       */
+/*   Updated: 2022/04/06 13:44:36 by nigoncal         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <iostream>
 # include <string>
+# include "ATarget.hpp"
 
 class ATarget;
 
@@ -39,6 +40,5 @@ public:
 	virtual ASpell *clone(void) const = 0;
 };
 
-# include "ATarget.hpp"
 
 #endif

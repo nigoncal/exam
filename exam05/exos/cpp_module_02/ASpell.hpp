@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ASpell.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 23:06:00 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/11 11:41:51 by ncolomer         ###   ########.fr       */
+/*   Updated: 2022/04/06 13:40:28 by nigoncal         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ASPELL_HPP
 # define ASPELL_HPP
 
+# include "ATarget.hpp"
 # include <iostream>
 # include <string>
 
@@ -38,7 +39,5 @@ public:
 
 	virtual ASpell *clone(void) const = 0;
 };
-
-# include "ATarget.hpp"
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Fireball.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 12:49:03 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/13 16:40:00 by ncolomer         ###   ########.fr       */
+/*   Updated: 2022/04/06 13:37:53 by nigoncal         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ Fireball::Fireball():
 
 Fireball::~Fireball() {}
 
-ASpell *Fireball::clone(void) const {
+ASpell *Fireball::clone(void) const 
+{
 	return (new Fireball(*this));
 }

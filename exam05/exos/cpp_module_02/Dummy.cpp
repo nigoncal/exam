@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Polymorph.cpp                                      :+:      :+:    :+:   */
+/*   Dummy.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/04 12:49:28 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/13 16:39:49 by ncolomer         ###   ########.fr       */
+/*   Created: 2020/01/16 23:16:30 by ncolomer          #+#    #+#             */
+/*   Updated: 2022/04/06 13:37:58 by nigoncal         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Polymorph.hpp"
+#include "Dummy.hpp"
 
-Polymorph::Polymorph():
-	ASpell("Polymorph", "turned to a sheep") {}
+Dummy::Dummy():
+	ATarget("Dummy Practice") {}
 
-Polymorph::~Polymorph() {}
+Dummy::~Dummy() {}
 
-ASpell *Polymorph::clone(void) const {
-	return (new Polymorph(*this));
+ATarget *Dummy::clone(void) const 
+{
+	return (new Dummy(*this));
 }

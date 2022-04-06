@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   BrickWall.cpp                                      :+:      :+:    :+:   */
+/*   Dummy.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/04 12:59:17 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/13 16:40:08 by ncolomer         ###   ########.fr       */
+/*   Created: 2020/01/16 23:16:30 by ncolomer          #+#    #+#             */
+/*   Updated: 2022/04/06 13:45:03 by nigoncal         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "BrickWall.hpp"
+#include "Dummy.hpp"
 
-BrickWall::BrickWall():
-	ATarget("BrickWall Practice") {}
+Dummy::Dummy():
+	ATarget("Dummy Practice") {}
 
-BrickWall::~BrickWall() {}
+Dummy::~Dummy() {}
 
-ATarget *BrickWall::clone(void) const {
-	return (new BrickWall(*this));
+ATarget *Dummy::clone(void) const 
+{
+	return (new Dummy(*this));
 }

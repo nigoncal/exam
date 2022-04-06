@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ATarget.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 23:26:40 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/13 16:40:16 by ncolomer         ###   ########.fr       */
+/*   Updated: 2022/04/06 13:38:17 by nigoncal         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,18 @@ ATarget::ATarget(ATarget const &other):
 
 ATarget::~ATarget() {}
 
-ATarget &ATarget::operator=(ATarget const &other) {
+ATarget &ATarget::operator=(ATarget const &other) 
+{
 	this->type = other.type;
 	return (*this);
 }
 
-std::string const &ATarget::getType(void) const {
+std::string const &ATarget::getType(void) const 
+{
 	return (this->type);
 }
 
-void ATarget::getHitBySpell(ASpell const &spell) const {
+void ATarget::getHitBySpell(ASpell const &spell) const 
+{
 	std::cout << this->type << " has been " << spell.getEffects() << "!\n";
 }

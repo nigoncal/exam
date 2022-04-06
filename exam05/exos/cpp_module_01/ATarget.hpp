@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ATarget.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 23:06:18 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/11 11:41:54 by ncolomer         ###   ########.fr       */
+/*   Updated: 2022/04/06 13:44:48 by nigoncal         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 
 # include <iostream>
 # include <string>
+# include "ASpell.hpp"
 
 class ASpell;
 
 class ATarget
 {
-protected:
+private:
 	std::string type;
 public:
 	ATarget();
@@ -37,6 +38,5 @@ public:
 	virtual ATarget *clone(void) const = 0;
 };
 
-# include "ASpell.hpp"
 
 #endif
