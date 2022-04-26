@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   microshell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: pmillet <milletp.pro@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/09 15:59:05 by gbaud             #+#    #+#             */
-/*   Updated: 2022/01/04 11:53:32 by nigoncal         ###   ########lyon.fr   */
+/*   Updated: 2022/04/26 18:44:22 by pmillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdio.h>
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -23,6 +25,30 @@
 #define ERR_EXEC "error: cannot execute "
 #define ERR_CD_ARG "error: cd: bad arguments\n"
 #define ERR_CD_DIR "error: cd: cannot change directory to "
+
+void	ft_putnbr_fd(int n, int fd)
+{
+	int	s;
+
+	if (n == -2147483648)
+	{
+		write(fd, "-2147483648", 11);
+	}
+	else
+	{
+		if (n < 0)
+		{
+			n = -n;
+			write(fd, "-", 1);
+		}
+		s = n % 10 + 48;
+		if (n > 9)
+			ft_putnbr_fd(n / 10, fd);
+		write(fd, &s, 1);
+	}
+}
+
+//*****************
 
 int ft_strlen(char *str) {
 	int i = 0;
@@ -43,7 +69,7 @@ int put_err(char *err, char *path)
 }
 
 /********		DELIMIT 1		********/
-
+// breaking input into segments, between "|" and ";"
 void sub(char **argv, char **av, int i, int j) {
 	int k = 0;
 	while (i < j)
@@ -60,31 +86,35 @@ int cd(char **av, int len)
     return (0);
 }
 
+
+
 /********		DELIMIT 2		********/
 
 int main(int ac, char **av, char **env) 
 {
-	int i=1,j,k,l;
-	int   p[2];
+	int i=1,j,k,l; // all my iterators.
+	// i = on argc (total nm of arg), j = inside argv[x], to look for semi-colons, k = , l = 
+	int   p[2]; // array with my 2 commands
 	pid_t pid;
 	int   fd_in;
 	
-	while (i < ac) 
+	while (i < ac) // while there are args to treat (counted by "ac")
 	{
 		j=i, k=i, l=i;
-		while (j < ac && strncmp(av[j], ";", 2)) // j = limite semicolon
+		// checks in every argv[j], if there is a ";" inside it
+		while (j < ac && strncmp(av[j], ";", 2)) // + if yes, is there a whitespace after the ";" ?
 			j++;
 		fd_in = 0;
-		while (k < j)
-		{ // Tant qu'il y a des pipes
-			l=k;
+		while (k < j) // Decompose chaque argv[] : avance tant qu'on est pas arrivé au ";"
+		{ 
+			l = k;
 			while (l < j && strncmp(av[l], "|", 2)) // [k - l] -> troncon cmd + arg
 				l++;
-			char *argv[l - k + 1];
+			char *argv[l - k + 1]; // creates an array with all commands ?..
 			sub(argv, av, k, l);
-			pipe(p);
+			pipe(p); // executes commands stored in p
 /********		DELIMIT 3		********/
-			if ((pid = fork()) == -1)
+			if ((pid = fork()) == -1) // forking and checking if it worked
 				return (put_err(ERR_FATAL, NULL));
 			else if (pid == 0)
 			{

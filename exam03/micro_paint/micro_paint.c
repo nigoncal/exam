@@ -6,7 +6,7 @@
 /*   By: pmillet <milletp.pro@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 22:41:22 by gbaud             #+#    #+#             */
-/*   Updated: 2022/02/10 14:35:25 by pmillet          ###   ########.fr       */
+/*   Updated: 2022/02/15 09:21:58 by pmillet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int main(int ac, char **av) {
     char c;
 
 //parsing start
-
     if (ac != 2)
         return (put_error(ERR_ARG));
     if (!(operation_file = fopen(av[1], "r"))) // ouvre le fichier en read
@@ -107,8 +106,7 @@ int main(int ac, char **av) {
             break;
         else if (last != 6 || r.w <= 0 || r.h <= 0) // meme parsing que plus haut mais juste un check des arg et si w et h st plus grands que 0
             return (put_error(ERR_OPE));
-    // parsing stop
-    // on ecrit le rectangle
+
         else if (put_rect(w, h, canvas, r))  // On ecrit le rect parsé a la ligne courante. 0 = rien a signaler
             return (put_error(ERR_OPE));
     }
@@ -120,6 +118,5 @@ int main(int ac, char **av) {
     }
     
     fclose(operation_file); // ne pas oublier !!!!
-    
     return (0);
 }
