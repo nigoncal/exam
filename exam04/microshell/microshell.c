@@ -1,151 +1,109 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   microshell.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pmillet <milletp.pro@gmail.com>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/09 15:59:05 by gbaud             #+#    #+#             */
-/*   Updated: 2022/04/26 18:44:22 by pmillet          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <stdio.h>
-
-#include <stdlib.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <string.h>
 
-#ifdef __linux__
-# include <sys/wait.h>
-# include <stdio.h>
-#endif
+// wetiven version from his gitLab
+// Compilation :
+// gcc -g -Wall -Werror -Wextra microshell.c -o microshell
 
-#define ERR_FATAL "error: fatal\n"
-#define ERR_EXEC "error: cannot execute "
-#define ERR_CD_ARG "error: cd: bad arguments\n"
-#define ERR_CD_DIR "error: cd: cannot change directory to "
-
-void	ft_putnbr_fd(int n, int fd)
+size_t	ft_strlen(const char *str)
 {
-	int	s;
+	const char	*ptr;
 
-	if (n == -2147483648)
+	ptr = str;
+	while (*ptr)
+		ptr++;
+	return (ptr - str);
+}
+
+void    ft_puterr(char *s) // 
+{ 
+	write(2, s, ft_strlen(s));
+}
+
+void	exec(char **av, char **env, int in, int out) // always specify in/output. fd[0]/fd[1] for pipes, else 0 and 1.
+{
+	int	pid;
+
+	if (av[0]) // Seems clearer to make that test here instead of burying it in an "else if".
 	{
-		write(fd, "-2147483648", 11);
-	}
-	else
-	{
-		if (n < 0)
+		if (strcmp(av[0], "cd") == 0) // Also avoiding brainfarts by expliciting strcmp expected returns, and avoiding "double negative" assumptions on its return.
 		{
-			n = -n;
-			write(fd, "-", 1);
-		}
-		s = n % 10 + 48;
-		if (n > 9)
-			ft_putnbr_fd(n / 10, fd);
-		write(fd, &s, 1);
-	}
-}
-
-//*****************
-
-int ft_strlen(char *str) {
-	int i = 0;
-	while (str[i]) 
-		i++;
-	return (i);
-}
-
-int put_err(char *err, char *path) 
-{
-	write(2, err, ft_strlen(err));
-	if (path) 
-	{
-		write(2, path, ft_strlen(path));
-		write(2, "\n", 1);
-	}
-	return (1);
-}
-
-/********		DELIMIT 1		********/
-// breaking input into segments, between "|" and ";"
-void sub(char **argv, char **av, int i, int j) {
-	int k = 0;
-	while (i < j)
-		argv[k++] = av[i++];
-	argv[k] = NULL;
-}
-
-int cd(char **av, int len) 
-{
-    if (len != 2)
-        return (put_err(ERR_CD_ARG, NULL));
-    if (chdir(av[1]))
-        return (put_err(ERR_CD_DIR, av[1]));
-    return (0);
-}
-
-
-
-/********		DELIMIT 2		********/
-
-int main(int ac, char **av, char **env) 
-{
-	int i=1,j,k,l; // all my iterators.
-	// i = on argc (total nm of arg), j = inside argv[x], to look for semi-colons, k = , l = 
-	int   p[2]; // array with my 2 commands
-	pid_t pid;
-	int   fd_in;
-	
-	while (i < ac) // while there are args to treat (counted by "ac")
-	{
-		j=i, k=i, l=i;
-		// checks in every argv[j], if there is a ";" inside it
-		while (j < ac && strncmp(av[j], ";", 2)) // + if yes, is there a whitespace after the ";" ?
-			j++;
-		fd_in = 0;
-		while (k < j) // Decompose chaque argv[] : avance tant qu'on est pas arrivé au ";"
-		{ 
-			l = k;
-			while (l < j && strncmp(av[l], "|", 2)) // [k - l] -> troncon cmd + arg
-				l++;
-			char *argv[l - k + 1]; // creates an array with all commands ?..
-			sub(argv, av, k, l);
-			pipe(p); // executes commands stored in p
-/********		DELIMIT 3		********/
-			if ((pid = fork()) == -1) // forking and checking if it worked
-				return (put_err(ERR_FATAL, NULL));
-			else if (pid == 0)
+			if (!av[1] || (av[1] && av[2])) // no arg or more than 1
+				ft_puterr("error: cd: bad arguments\n");
+			else if (chdir(av[1]) == -1) // can't go to path
 			{
-				dup2(fd_in, 0);
-				if (l < j)
-					dup2(p[1], 1);
-				close(p[0]);
-				if (!strncmp(argv[0], "cd", 3))
-					cd(argv, l-k);
-				else if (execve(argv[0], argv, env)) 
+				ft_puterr("error: cd: cannot change directory to ");
+				ft_puterr(av[1]);
+				ft_puterr("\n");
+			}
+		}
+		else
+		{
+			pid = fork();
+			if (pid == 0) // if fork fails, restore in/outputs (why??) and put error and exit
+			{
+				if (in != STDIN_FILENO)
 				{
-					close(p[1]);
-					close(fd_in);
-					return (put_err(ERR_EXEC, argv[0]));
+					dup2(in, STDIN_FILENO);
+					close(in);
 				}
-				close(p[1]);
-				close(fd_in);
-				return (0);
-			} 
-			else 
-			{
-				waitpid(pid, NULL, 0);
-				close(p[1]);
-				if (fd_in)
-					close(fd_in);
-				fd_in = p[0];
-    		}
-			k=l+1;
+				if (out != STDOUT_FILENO)
+				{
+					dup2(out, STDOUT_FILENO);
+					close(out);
+				}
+				execve(av[0], av, env);
+				ft_puterr("error: cannot execute ");
+				ft_puterr(av[0]);
+				ft_puterr("\n");
+				exit(-1);
+			}
 		}
-		close(fd_in);
-		i=j+1;
 	}
-	return (0);
+}
+
+int	main(int ac, char **av, char **env)
+{
+	int	start = 0, end = start, cmd_in = STDIN_FILENO;
+	int	fd[2];
+
+	(void)ac;
+	av = &av[1]; // gets rid of av[0] which is not usefull
+	while (av[end])
+	{
+		if (strcmp(av[end], "|") == 0) // pipe = execute cmd, then use output as input to next cmd
+		{
+			av[end] = NULL;
+			pipe(fd); // create pipe
+			exec(av + start, env, cmd_in, fd[1]); // Send output to pipe // exec(char **av, char **env, int in, int out)
+			close(fd[1]); // Close pipe output
+			if (cmd_in != STDIN_FILENO)
+				close(cmd_in);
+			cmd_in = fd[0]; // // pipe input becomes current cmd input
+			end++;
+			start = end;
+		}
+		else if (strcmp(av[end], ";") == 0) // semi-colon = there are several cmds to treat (before and after the ";")
+		{
+			av[end] = NULL;
+			exec(av + start, env, cmd_in, STDOUT_FILENO); // Send out == 1
+			while (waitpid(-1, NULL, 0) != -1) // Wait for prev cmd exec
+				;
+			if (cmd_in != STDIN_FILENO)
+				close(cmd_in);
+			cmd_in = STDIN_FILENO; // current cmd input resets to STDIN (meaning 0)
+			end++;
+			start = end;
+		}
+		else
+			end++; // go to next arg 
+	}
+	if (end > 0 && av[end - 1] != NULL) // if previous av[] is null, means it has been treated bc it had a | or ; ?
+		exec(av + start, env, cmd_in, STDOUT_FILENO); // executing all non null av[], starting at "start"
+	while (waitpid(-1, NULL, 0) != -1)
+		;
+	if (cmd_in != STDIN_FILENO) // Don't know why this was above waitpid in the original version, it seems to work here, but let's keep that in mind if unexpected bugs appear.
+		close(cmd_in);
+	return 0;
 }
