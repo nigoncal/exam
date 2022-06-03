@@ -41,7 +41,7 @@ void	exec(char **av, char **env, int in, int out) // always specify in/output. f
 		else
 		{
 			pid = fork();
-			if (pid == 0) // if fork fails, restore in/outputs (why??) and put error and exit
+			if (pid == 0) // if we're in child process, restore in/outputs (in case precedent pipes messed them up), execve the cmd, and put error and exit
 			{
 				if (in != STDIN_FILENO)
 				{
@@ -75,12 +75,12 @@ int	main(int ac, char **av, char **env)
 		if (strcmp(av[end], "|") == 0) // pipe = execute cmd, then use output as input to next cmd
 		{
 			av[end] = NULL;
-			pipe(fd); // create pipe
+			pipe(fd); // creates a pipe via fd's
 			exec(av + start, env, cmd_in, fd[1]); // Send output to pipe // exec(char **av, char **env, int in, int out)
 			close(fd[1]); // Close pipe output
-			if (cmd_in != STDIN_FILENO)
+			if (cmd_in != STDIN_FILENO) // check if some fd is open here
 				close(cmd_in);
-			cmd_in = fd[0]; // // pipe input becomes current cmd input
+			cmd_in = fd[0]; // // pipe input becomes current cmd input for next loop to catch
 			end++;
 			start = end;
 		}
@@ -105,5 +105,5 @@ int	main(int ac, char **av, char **env)
 		;
 	if (cmd_in != STDIN_FILENO) // Don't know why this was above waitpid in the original version, it seems to work here, but let's keep that in mind if unexpected bugs appear.
 		close(cmd_in);
-	return 0;
+	return 0; // don't forget this !!!
 }
