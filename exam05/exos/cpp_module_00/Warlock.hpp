@@ -1,41 +1,24 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Warlock.hpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/16 20:37:27 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/04 13:04:30 by ncolomer         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#pragma once
 
-#ifndef WARLOCK_HPP
-# define WARLOCK_HPP
-
-# include <iostream>
-# include <string>
+#include <iostream>
 
 class Warlock
 {
-private:
-	std::string name;
-	std::string title;
+    private:
+        std::string name;
+        std::string title;
 
-	Warlock();
-	Warlock(Warlock const &other);
+        Warlock();
+        Warlock(Warlock const &other);
+        Warlock &operator=(Warlock const &other);
+    public:
+        Warlock(std::string const &name, std::string const &title);
+        ~Warlock();
 
-	Warlock &operator=(Warlock const &other);
-public:
-	Warlock(std::string const &name, std::string const &title);
-	virtual ~Warlock();
+        std::string const &getName() const;
+        std::string const &getTitle() const;
 
-	std::string const &getName(void) const;
-	std::string const &getTitle(void) const;
+        void setTitle(std::string const &title);
 
-	void setTitle(std::string const &title);
-
-	void introduce(void) const;
+        void introduce() const;
 };
-
-#endif

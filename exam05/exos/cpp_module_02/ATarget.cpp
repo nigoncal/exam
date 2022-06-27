@@ -1,40 +1,31 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ATarget.cpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/16 23:26:40 by ncolomer          #+#    #+#             */
-/*   Updated: 2022/04/06 13:38:17 by nigoncal         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ATarget.hpp"
 
-ATarget::ATarget():
-	type() {}
+ATarget::ATarget() {}
 
-ATarget::ATarget(std::string const &type):
-	type(type) {}
+ATarget::ATarget(std::string const &type) 
+{ 
+    this->type = type;
+}
 
-ATarget::ATarget(ATarget const &other):
-	type(other.type) {}
+ATarget::ATarget(ATarget const &other) 
+{ 
+    *this = other;
+}
+
+ATarget &ATarget::operator=(ATarget const &other)
+{
+    this->type = other.type;
+    return (*this);
+}
 
 ATarget::~ATarget() {}
 
-ATarget &ATarget::operator=(ATarget const &other) 
-{
-	this->type = other.type;
-	return (*this);
+std::string const &ATarget::getType() const 
+{ 
+    return (this->type);
 }
 
-std::string const &ATarget::getType(void) const 
+void ATarget::getHitBySpell(ASpell const &aspell_ref) const
 {
-	return (this->type);
-}
-
-void ATarget::getHitBySpell(ASpell const &spell) const 
-{
-	std::cout << this->type << " has been " << spell.getEffects() << "!\n";
+    std::cout << this->type << " has been " << aspell_ref.getEffects() << "!\n";
 }

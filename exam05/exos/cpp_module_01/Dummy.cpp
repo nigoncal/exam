@@ -1,23 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Dummy.cpp                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/16 23:16:30 by ncolomer          #+#    #+#             */
-/*   Updated: 2022/04/06 13:45:03 by nigoncal         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "Dummy.hpp"
 
-Dummy::Dummy():
-	ATarget("Dummy Practice") {}
-
+Dummy::Dummy(): ATarget("Target Practice Dummy") {}
 Dummy::~Dummy() {}
 
-ATarget *Dummy::clone(void) const 
+ATarget *Dummy::clone() const
 {
-	return (new Dummy(*this));
+    return (new Dummy());
 }

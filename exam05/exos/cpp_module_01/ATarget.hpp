@@ -1,42 +1,26 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ATarget.hpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nigoncal <nigoncal@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/16 23:06:18 by ncolomer          #+#    #+#             */
-/*   Updated: 2022/04/06 13:44:48 by nigoncal         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
+#pragma once
 
-#ifndef ATARGET_HPP
-# define ATARGET_HPP
-
-# include <iostream>
-# include <string>
-# include "ASpell.hpp"
+#include <iostream>
 
 class ASpell;
 
 class ATarget
 {
-private:
-	std::string type;
-public:
-	ATarget();
-	ATarget(std::string const &type);
-	ATarget(ATarget const &other);
-	virtual ~ATarget();
+    private:
+        std::string type;
+    
+    public:
+        ATarget();
+        ATarget(std::string const &type);
+        ATarget(ATarget const &other);
+        ATarget &operator=(ATarget const &other);
+        virtual ~ATarget();
 
-	ATarget &operator=(ATarget const &other);
+        std::string const &getType() const;
 
-	std::string const &getType(void) const;
+        void getHitBySpell(ASpell const &aspell_ref) const;
 
-	void getHitBySpell(ASpell const &spell) const;
-
-	virtual ATarget *clone(void) const = 0;
+        virtual ATarget *clone() const = 0;
 };
 
-
-#endif
+#include "ASpell.hpp"

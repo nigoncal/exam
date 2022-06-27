@@ -3,7 +3,7 @@ Conseil pour les exams
 - S'inscrire a l'event et au projet
 - Se log avec exam exam
 - Executer examshell (pas besoin de kinit)
-- Toujours compilet avec les flags -Wall -Wextra -Werror
+- Toujours compiler avec les flags -Wall -Wextra -Werror
 
 Pour vim : 
 
