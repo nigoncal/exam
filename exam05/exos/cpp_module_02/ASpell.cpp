@@ -32,7 +32,7 @@ std::string const &ASpell::getEffects() const
     return (this->effects);
 }
 
-void ASpell::launch(ATarget const &atarget_ref) const
+void ASpell::launch(ATarget const &target) const
 {
-    atarget_ref.getHitBySpell((*this));
+    target.getHitBySpell((*this));
 }
